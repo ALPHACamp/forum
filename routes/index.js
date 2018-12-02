@@ -11,7 +11,17 @@ module.exports = function (app, passport) {
     res.redirect('/signin')
   }
 
+  function authenticatedAdmin (req, res, next) {
+    if (req.isAuthenticated()) {
+      if(req.user.role)
+        return next()
+      return res.redirect('/')
+    }
+    res.redirect('/signin')
+  }
+
   app.get('/', authenticated, (req, res) => res.render('index'))
+  app.get('/admin', authenticatedAdmin, (req, res) => res.render('admin'))
 
   app.get('/signin', (req, res) => res.render('signin'))
   app.post('/signin', 
