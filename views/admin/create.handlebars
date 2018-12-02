@@ -1,0 +1,13 @@
+{{#if restaurant}}
+  <form action="/admin/restaurants/{{restaurant.id}}?_method=PUT" method="POST">
+    <input type="text" placeholder="name" name="name" value="{{{restaurant.name}}}">
+    <button type="submit">Submit</button>
+  </form>
+{{else}}
+  <form action="/admin/restaurants" method="POST">
+    <input type="text" placeholder="name" name="name">
+    <button type="submit">Submit</button>
+  </form>
+{{/if}}
+<br/>
+<a href="/admin">回列表</a>

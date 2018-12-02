@@ -1,0 +1,23 @@
+<a href='/admin/restaurants/create'>create</a>
+<a href='/restaurants'>回前台列表</a>
+<br/>
+<div>
+  
+  <h6>Recent updates</h6>
+  <table>
+    {{#each restaurants}}
+    <tr/>
+      <td>
+        {{{this.name}}} 
+      </td>
+      <td>
+      <a href="/admin/restaurants/{{{this.id}}}"><button>show</button></a>
+      <a href="/admin/restaurants/{{{this.id}}}/edit"><button>edit</button></a>
+      <form action="/admin/restaurants/{{{this.id}}}?_method=DELETE" method="POST"
+        style="display: inline;"><button type="submit" >delete</button>
+      </form>
+      </td>
+    </tr>
+    {{/each}}
+  </table>
+</div>

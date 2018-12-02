@@ -1,0 +1,18 @@
+<h1>You are login!</h1>
+<a href="/admin">admin</a>
+<a href="/logout">logout</a>
+<br/>
+<div>
+  
+  <h6>Recent updates</h6>
+  <table>
+    {{#each restaurants}}
+    <tr/>
+      <td>
+        {{{this.name}}} 
+        <a href="/restaurants/{{{this.id}}}"><button>show</button></a>
+      </td>
+    </tr>
+    {{/each}}
+  </table>
+</div>

@@ -1,4 +1,6 @@
 const bcrypt = require('bcrypt-nodejs')
+const adminController = require('../controllers/adminController.js')
+const restController = require('../controllers/restController.js')
 const db = require('../models')
 const User = db.User
 
@@ -20,8 +22,17 @@ module.exports = function (app, passport) {
     res.redirect('/signin')
   }
 
-  app.get('/', authenticated, (req, res) => res.render('index'))
-  app.get('/admin', authenticatedAdmin, (req, res) => res.render('admin'))
+  app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
+  app.get('/restaurants', authenticated, restController.getRestaurants)
+  app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+  app.get('/admin', authenticatedAdmin, (req, res) => res.redirect('/admin/restaurants'))
+  app.get('/admin/restaurants', authenticatedAdmin, adminController.getRestaurants)
+  app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
+  app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
+  app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant)
+  app.post('/admin/restaurants', authenticatedAdmin, adminController.postRestaurant)
+  app.put('/admin/restaurants/:id', authenticatedAdmin, adminController.putRestaurant)
+  app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
 
   app.get('/signin', (req, res) => res.render('signin'))
   app.post('/signin', 
