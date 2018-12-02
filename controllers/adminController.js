@@ -1,3 +1,5 @@
+const multer = require('multer')
+const fs = require('fs')
 const db = require('../models')
 const Restaurant = db.Restaurant
 
@@ -21,12 +23,21 @@ let adminController = {
     })
   },
   postRestaurant: (req, res) => {
+    
+    const { file } = req
+    if(file)
+      fs.readFile(file.path, (err, data) => {
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+        })
+      })
+
     return Restaurant.create({
       name: req.body.name,
       tel: req.body.tel,
       address: req.body.address,
       opening_hours: req.body.opening_hours,
       description: req.body.description,
+      image: file ? file.originalname : null,
       createdAt : new Date(),
       updatedAt : new Date(),
      })
@@ -35,12 +46,27 @@ let adminController = {
      });
   },
   putRestaurant: (req, res) => {
+    const { file } = req
+    if(file)
+      fs.readFile(file.path, (err, data) => {
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+        })
+      })
+
     return Restaurant.findByPk(req.params.id)
       .then(function (restaurant) {
-        restaurant.updateAttributes(req.body)
-          .then(function(restaurant) {
-            res.redirect('/admin/restaurants')
-          });
+        restaurant.updateAttributes({
+          name: req.body.name,
+          tel: req.body.tel,
+          address: req.body.address,
+          opening_hours: req.body.opening_hours,
+          description: req.body.description,
+          image: file ? file.originalname : null,
+          createdAt : new Date(),
+         })
+        .then(function(restaurant) {
+          res.redirect('/admin/restaurants')
+        });
       });
   },
   deleteRestaurant: (req, res) => {

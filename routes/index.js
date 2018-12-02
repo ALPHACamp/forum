@@ -4,6 +4,9 @@ const restController = require('../controllers/restController.js')
 const db = require('../models')
 const User = db.User
 
+var multer = require('multer')
+var upload = multer({ dest: 'upload/' });
+
 module.exports = function (app, passport) {
 
   function authenticated (req, res, next) {
@@ -30,8 +33,8 @@ module.exports = function (app, passport) {
   app.get('/admin/restaurants/create', authenticatedAdmin, adminController.createRestaurant)
   app.get('/admin/restaurants/:id/edit', authenticatedAdmin, adminController.editRestaurant)
   app.get('/admin/restaurants/:id', authenticatedAdmin, adminController.getRestaurant)
-  app.post('/admin/restaurants', authenticatedAdmin, adminController.postRestaurant)
-  app.put('/admin/restaurants/:id', authenticatedAdmin, adminController.putRestaurant)
+  app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
+  app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
 
   app.get('/signin', (req, res) => res.render('signin'))
