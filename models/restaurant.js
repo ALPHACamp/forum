@@ -6,10 +6,11 @@ module.exports = (sequelize, DataTypes) => {
     address: DataTypes.STRING,
     opening_hours: DataTypes.STRING,
     image: DataTypes.STRING,
-    description: DataTypes.TEXT
+    description: DataTypes.TEXT,
   }, {});
   Restaurant.associate = function(models) {
     // associations can be defined here
+    Restaurant.belongsTo(models.Category);
   };
   return Restaurant;
 };

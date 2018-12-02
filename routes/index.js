@@ -1,6 +1,7 @@
 const bcrypt = require('bcrypt-nodejs')
 const adminController = require('../controllers/adminController.js')
 const restController = require('../controllers/restController.js')
+const categoryController = require('../controllers/categoryController.js')
 const db = require('../models')
 const User = db.User
 
@@ -36,6 +37,12 @@ module.exports = function (app, passport) {
   app.post('/admin/restaurants', authenticatedAdmin, upload.single('image'), adminController.postRestaurant)
   app.put('/admin/restaurants/:id', authenticatedAdmin, upload.single('image'), adminController.putRestaurant)
   app.delete('/admin/restaurants/:id', authenticatedAdmin, adminController.deleteRestaurant)
+ 
+  app.get('/admin/categories', authenticatedAdmin, categoryController.getCategories)
+  app.get('/admin/categories/:id', authenticatedAdmin, categoryController.getCategories)
+  app.post('/admin/categories', authenticatedAdmin, categoryController.postCategory)
+  app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
+  app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
 
   app.get('/signin', (req, res) => res.render('signin'))
   app.post('/signin', 

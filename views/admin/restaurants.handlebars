@@ -1,4 +1,5 @@
 <a href='/admin/restaurants/create'>create</a>
+<a href='/admin/categories'>categories</a>
 <br/>
 
 <div class="my-3 p-3 bg-white rounded shadow-sm">
@@ -9,6 +10,7 @@
     <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
       <strong class="d-block text-gray-dark">{{{this.name}}}</strong>
     </p>
+    <p class="card-text">{{{this.Category.dataValues.name}}}</p>
     <div>
       <a href="/admin/restaurants/{{{this.id}}}"><button>show</button></a>
       <a href="/admin/restaurants/{{{this.id}}}/edit"><button>edit</button></a>

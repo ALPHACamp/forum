@@ -1,0 +1,37 @@
+<a href='/admin'>resturants</a>
+
+<div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
+  {{#if category}}
+    <form action="/admin/categories/{{{category.id}}}?_method=PUT" method="POST">
+      <input type="checkbox" name="done" {{#if category.done}}checked{{/if}} hidden>
+      <input type="text" placeholder="name" name="name"
+       value="{{{category.name}}}">
+      <button type="submit">Update</button>
+      <a href="/admin/categories">or Create New</a>
+    </form>
+  {{else}}
+    <form action="/admin/categories" method="POST">
+      <input type="text" placeholder="name" name="name">
+      <button type="submit">Submit</button>
+    </form>
+  {{/if}}
+</div>
+
+<br/>
+
+<div class="my-3 p-3 bg-white rounded shadow-sm">
+  <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
+  {{#each categories}}
+  <div class="media text-muted pt-3">
+    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+      <strong class="d-block text-gray-dark">{{{this.name}}}</strong>
+    </p>
+    <div>
+      <a href="/admin/categories/{{{this.id}}}"><button>edit</button></a>
+      <form action="/admin/categories/{{{this.id}}}?_method=DELETE" method="POST"
+        style="display: inline;"><button type="submit" >delete</button>
+      </form>
+    </div>
+  </div>
+  {{/each}}
+</div>
