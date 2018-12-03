@@ -9,6 +9,29 @@
   </p>
 </div>
 
+所有評論：
+<ul>
+  {{#each restaurant.Comments}}
+  <li>
+    {{{this.dataValues.User.dataValues.email}}}: {{{this.dataValues.text}}}
+    <form action="/comments/{{{this.dataValues.id}}}?_method=DELETE" method="POST" style="display: inline;">{{#if ../user.role}}<button type="submit" class="btn btn-link">Delete</button>{{/if}}</form>
+  </li>
+  {{/each}}
+</ul>
+
+{{#unless restaurant.Comments}}
+<p>目前沒有評論</p>
+{{/unless}}
+
+<form action="/comments" method="POST">
+  <div class="form-group">
+    <label for="text">留下評論：</label>
+    <textarea class="form-control" id="text" name="text" rows="3"></textarea>
+  </div>
+  <input type="hidden" name="restaurantId" value="{{{restaurant.id}}}" />
+  <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
 <br/>
 <a href="/">回列表</a>
 
