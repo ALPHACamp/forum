@@ -11,7 +11,7 @@ let restController = {
     })
   },
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, {include: [Category, {model: Comment, include: [User]}]}).then(restaurant => {
+    return Restaurant.findByPk(req.params.id, {include: [Category, { model: User, as: 'UserFavorite' }, {model: Comment, include: [User]}]}).then(restaurant => {
       return res.render('restaurant', {restaurant: restaurant, user: req.user, isAuthenticated: req.isAuthenticated})
     })
   }

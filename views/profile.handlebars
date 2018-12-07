@@ -1,0 +1,18 @@
+
+
+<h6>Profile</h6>
+<div>
+  <p>
+    信箱： {{{user.email}}}
+  </p>
+</div>
+
+你的最愛：
+<ul>
+  {{#each user.UserFavorite}}
+  <li>
+    <a href="/restaurants/{{{this.restaurantId}}}">{{{this.name}}}</a>
+    <form action="/favorite/{{{this.id}}}?_method=DELETE" method="POST" style="display: inline;"><button type="submit" class="btn btn-link">移除</button></form>
+  </li>
+  {{/each}}
+</ul>

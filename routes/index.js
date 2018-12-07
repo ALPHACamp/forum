@@ -3,6 +3,7 @@ const adminController = require('../controllers/adminController.js')
 const restController = require('../controllers/restController.js')
 const categoryController = require('../controllers/categoryController.js')
 const commentController = require('../controllers/commentController.js')
+const userController = require('../controllers/userController.js')
 const db = require('../models')
 const User = db.User
 
@@ -27,6 +28,9 @@ module.exports = function (app, passport) {
 
   app.get('/', (req, res) => res.redirect('/restaurants'))
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
+  app.get('/profile', authenticated, userController.getUser)
+  app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
+  app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
   app.get('/restaurants', authenticated, restController.getRestaurants)
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
 
