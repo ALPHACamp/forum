@@ -15,7 +15,8 @@
 <ul>
   {{#each restaurant.Comments}}
   <li>
-    {{{this.dataValues.User.dataValues.email}}}: {{{this.dataValues.text}}}
+    
+    <a href="/profile/{{{this.User.id}}}">{{{this.User.email}}}</a>: {{{this.text}}}
     <form action="/comments/{{{this.dataValues.id}}}?_method=DELETE" method="POST" style="display: inline;">{{#if ../user.isAdmin}}<button type="submit" class="btn btn-link">Delete</button>{{/if}}</form>
   </li>
   {{/each}}

@@ -28,7 +28,10 @@ module.exports = function (app, passport) {
 
   app.get('/', (req, res) => res.redirect('/restaurants'))
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
-  app.get('/profile', authenticated, userController.getUser)
+  app.get('/profile/:id', authenticated, userController.getUser)
+  app.post('/following/:userId', authenticated, userController.addFollowing)
+  app.delete('/following/:userId', authenticated, userController.removeFollowing)
+  
   app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
   app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
   app.get('/restaurants', authenticated, restController.getRestaurants)

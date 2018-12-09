@@ -3,16 +3,46 @@
 <h6>Profile</h6>
 <div>
   <p>
-    信箱： {{{user.email}}}
+    信箱： {{{profile.email}}}
   </p>
 </div>
 
+
+
+{{#unless deletable }}
+{{#if followed }}
+<form action="/following/{{{profile.id}}}?_method=DELETE" method="POST"><button type="submit" class="btn btn-link">取消追蹤</button></form>
+{{else}}
+<form action="/following/{{{profile.id}}}" method="POST"><button type="submit" class="btn btn-link">追蹤</button></form>
+{{/if}}
+{{/unless}}
+
 你的最愛：
 <ul>
-  {{#each user.UserFavorite}}
+  {{#each profile.UserFavorite}}
   <li>
     <a href="/restaurants/{{{this.restaurantId}}}">{{{this.name}}}</a>
+    {{#if ../deletable }}
     <form action="/favorite/{{{this.id}}}?_method=DELETE" method="POST" style="display: inline;"><button type="submit" class="btn btn-link">移除</button></form>
+    {{/if}}
+  </li>
+  {{/each}}
+</ul>
+
+你的追蹤者：
+<ul>
+  {{#each profile.Follower}}
+  <li>
+    <a href="/profile/{{{this.id}}}">{{{this.email}}}</a>
+  </li>
+  {{/each}}
+</ul>
+
+你追蹤的使用者：
+<ul>
+  {{#each profile.Following}}
+  <li>
+    <a href="/profile/{{{this.id}}}">{{{this.email}}}</a>
   </li>
   {{/each}}
 </ul>
