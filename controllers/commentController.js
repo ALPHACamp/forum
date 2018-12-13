@@ -11,15 +11,15 @@ let commentController = {
       RestaurantId: req.body.restaurantId,
       UserId: req.user.id
     })
-    .then(function (restaurant) {
+    .then((restaurant) => {
       res.redirect(`/restaurants/${req.body.restaurantId}`)
     })
   },
   deleteComment: (req, res) => {
     return Comment.findByPk(req.params.id, {include: [Restaurant]})
-      .then(function (comment) {
+      .then((comment) => {
         comment.destroy()
-          .then(function (comment) {
+          .then((comment) => {
             res.redirect(`/restaurants/${comment.dataValues.RestaurantId}`)
           })
       })

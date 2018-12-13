@@ -47,7 +47,7 @@ let adminController = {
       updatedAt : new Date(),
       CategoryId: req.body.categoryId
      })
-     .then(function (restaurant) {
+     .then((restaurant) => {
        res.redirect('/admin/restaurants')
      });
   },
@@ -60,7 +60,7 @@ let adminController = {
       })
 
     return Restaurant.findByPk(req.params.id)
-      .then(function (restaurant) {
+      .then((restaurant) => {
         restaurant.updateAttributes({
           name: req.body.name,
           tel: req.body.tel,
@@ -71,16 +71,16 @@ let adminController = {
           createdAt : new Date(),
           CategoryId: req.body.categoryId
          })
-        .then(function(restaurant) {
+        .then(restaurant) => {
           res.redirect('/admin/restaurants')
         });
       });
   },
   deleteRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id)
-      .then(function (restaurant) {
+      .then((restaurant) => {
         restaurant.destroy()
-          .then(function(restaurant) {
+          .then((restaurant) => {
             res.redirect('/admin/restaurants')
           });
       });

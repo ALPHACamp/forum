@@ -25,15 +25,15 @@ let userController = {
       createdAt: new Date(),
       updatedAt: new Date()
     })
-     .then(function (restaurant) {
+     .then((restaurant) => {
        return res.redirect(`/restaurants/${req.params.restaurantId}`)
      })
   },
   removeFavorite: (req, res) => {
     return Favorite.findOne({where: {userId: req.user.id, RestaurantId: req.params.restaurantId}})
-      .then(function (favorite) {
+      .then((favorite) => {
         favorite.destroy()
-         .then(function (restaurant) {
+         .then((restaurant) => {
            return res.redirect(`/profile`)
          })
       })
@@ -45,15 +45,15 @@ let userController = {
       createdAt: new Date(),
       updatedAt: new Date()
     })
-     .then(function (followship) {
+     .then((followship) => {
        return res.redirect(`/profile/${req.params.userId}`)
      })
   },
   removeFollowing: (req, res) => {
     return Followship.findOne({where: {followerId: req.user.id, followingId: req.params.userId}})
-      .then(function (followship) {
+      .then((followship) => {
         followship.destroy()
-         .then(function (followship) {
+         .then((followship) => {
            return res.redirect(`/profile/${req.params.userId}`)
          })
       })

@@ -10,15 +10,15 @@ const User = db.User
 var multer = require('multer')
 var upload = multer({ dest: 'upload/' })
 
-module.exports = function (app, passport) {
-  function authenticated (req, res, next) {
+module.exports = (app, passport) => {
+  const authenticated = (req, res, next) {
     if (req.isAuthenticated()) {
       return next()
     }
     res.redirect('/signin')
   }
 
-  function authenticatedAdmin (req, res, next) {
+  const authenticatedAdmin = (req, res, next) {
     if (req.isAuthenticated()) {
       if (req.user.isAdmin) { return next() }
       return res.redirect('/')
@@ -58,7 +58,7 @@ module.exports = function (app, passport) {
   app.get('/signin', (req, res) => res.render('signin'))
   app.post('/signin',
     passport.authenticate('local', { failureRedirect: '/signin'}),
-    function (req, res) {
+    (req, res) => {
       res.redirect('/')
     }
   )

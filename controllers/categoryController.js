@@ -6,7 +6,7 @@ let categoryController = {
     return Category.findAll().then(categories => {
       if (req.params.id) {
         Category.findByPk(req.params.id)
-        .then(function (category) {
+        .then((category) => {
           return res.render('admin/categories', {categories: categories, category: category, user: req.user, isAuthenticated: req.isAuthenticated})
         })
       } else {
@@ -20,24 +20,24 @@ let categoryController = {
       createdAt: new Date(),
       updatedAt: new Date()
     })
-     .then(function (category) {
+     .then((category) => {
        res.redirect('/admin/categories')
      })
   },
   putCategory: (req, res) => {
     return Category.findByPk(req.params.id)
-      .then(function (category) {
+      .then((category) => {
         category.updateAttributes(req.body)
-        .then(function (category) {
+        .then((category) => {
           res.redirect('/admin/categories')
         })
       })
   },
   deleteCategory: (req, res) => {
     return Category.findByPk(req.params.id)
-      .then(function (category) {
+      .then((category) => {
         category.destroy()
-          .then(function (category) {
+          .then((category) => {
             res.redirect('/admin/categories')
           })
       })

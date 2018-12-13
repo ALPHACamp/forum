@@ -9,7 +9,7 @@ passport.use(new LocalStrategy({
     passwordField: 'password',
     passReqToCallback: true,
   },
-  function(req, username, password, cb) {
+  (req, username, password, cb) => {
     User.findOne({where: {email: username}}).then(user => {
       if (!user) return cb(null, false)
       if (!bcrypt.compareSync(password, user.password)) return cb(null, false)
@@ -18,11 +18,11 @@ passport.use(new LocalStrategy({
   }
 ))
 
-passport.serializeUser(function(user, cb) {
+passport.serializeUser((user, cb) => {
   cb(null, user.id);
 });
 
-passport.deserializeUser(function(id, cb) {
+passport.deserializeUser((id, cb) => {
   User.findByPk(id).then(user => {
     return cb(null, user)
   })
