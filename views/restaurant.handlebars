@@ -2,22 +2,22 @@
 <h6>Recent updates</h6>
 <div>
   <p>
-    {{{restaurant.name}}}
+    {{restaurant.name}}
   </p>
   <p>
-   {{{restaurant.Category.dataValues.name}}}
+   {{restaurant.Category.dataValues.name}}
   </p>
 </div>
 
-<form action="/favorite/{{{restaurant.id}}}" method="POST"><button type="submit" class="btn btn-link">加到最愛</button></form>
+<form action="/favorite/{{restaurant.id}}" method="POST"><button type="submit" class="btn btn-link">加到最愛</button></form>
 
 所有評論：
 <ul>
   {{#each restaurant.Comments}}
   <li>
     
-    <a href="/profile/{{{this.User.id}}}">{{{this.User.email}}}</a>: {{{this.text}}}
-    <form action="/comments/{{{this.dataValues.id}}}?_method=DELETE" method="POST" style="display: inline;">{{#if ../user.isAdmin}}<button type="submit" class="btn btn-link">Delete</button>{{/if}}</form>
+    <a href="/profile/{{this.User.id}}">{{this.User.email}}</a>: {{this.text}}
+    <form action="/comments/{{this.dataValues.id}}?_method=DELETE" method="POST" style="display: inline;">{{#if ../user.isAdmin}}<button type="submit" class="btn btn-link">Delete</button>{{/if}}</form>
   </li>
   {{/each}}
 </ul>
@@ -31,7 +31,7 @@
     <label for="text">留下評論：</label>
     <textarea class="form-control" id="text" name="text" rows="3"></textarea>
   </div>
-  <input type="hidden" name="restaurantId" value="{{{restaurant.id}}}" />
+  <input type="hidden" name="restaurantId" value="{{restaurant.id}}" />
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 

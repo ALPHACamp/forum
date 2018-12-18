@@ -5,10 +5,10 @@ const db = require('../models')
 const User = db.User
 
 passport.use(new LocalStrategy({
-    usernameField: 'email',
-    passwordField: 'password',
-    passReqToCallback: true,
-  },
+  usernameField: 'email',
+  passwordField: 'password',
+  passReqToCallback: true
+},
   (req, username, password, cb) => {
     User.findOne({where: {email: username}}).then(user => {
       if (!user) return cb(null, false)
@@ -19,8 +19,8 @@ passport.use(new LocalStrategy({
 ))
 
 passport.serializeUser((user, cb) => {
-  cb(null, user.id);
-});
+  cb(null, user.id)
+})
 
 passport.deserializeUser((id, cb) => {
   User.findByPk(id).then(user => {

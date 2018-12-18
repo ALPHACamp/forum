@@ -1,4 +1,3 @@
-const multer = require('multer')
 const fs = require('fs')
 const db = require('../models')
 const Restaurant = db.Restaurant
@@ -19,7 +18,6 @@ let adminController = {
     Category.findAll().then(categories => {
       return res.render('admin/create', {categories: categories})
     })
-    
   },
   editRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id).then(restaurant => {
@@ -30,11 +28,13 @@ let adminController = {
   },
   postRestaurant: (req, res) => {
     const { file } = req
-    if(file)
+    if (file) {
       fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error: ', err)
         fs.writeFile(`upload/${file.originalname}`, data, () => {
         })
       })
+    }
 
     return Restaurant.create({
       name: req.body.name,
@@ -43,21 +43,23 @@ let adminController = {
       opening_hours: req.body.opening_hours,
       description: req.body.description,
       image: file ? file.originalname : null,
-      createdAt : new Date(),
-      updatedAt : new Date(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
       CategoryId: req.body.categoryId
-     })
+    })
      .then((restaurant) => {
        res.redirect('/admin/restaurants')
-     });
+     })
   },
   putRestaurant: (req, res) => {
     const { file } = req
-    if(file)
+    if (file) {
       fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error: ', err)
         fs.writeFile(`upload/${file.originalname}`, data, () => {
         })
       })
+    }
 
     return Restaurant.findByPk(req.params.id)
       .then((restaurant) => {
@@ -68,13 +70,13 @@ let adminController = {
           opening_hours: req.body.opening_hours,
           description: req.body.description,
           image: file ? file.originalname : restaurant.image,
-          createdAt : new Date(),
+          createdAt: new Date(),
           CategoryId: req.body.categoryId
-         })
-        .then(restaurant) => {
+        })
+        .then((restaurant) => {
           res.redirect('/admin/restaurants')
-        });
-      });
+        })
+      })
   },
   deleteRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id)
@@ -82,8 +84,8 @@ let adminController = {
         restaurant.destroy()
           .then((restaurant) => {
             res.redirect('/admin/restaurants')
-          });
-      });
-  },
+          })
+      })
+  }
 }
 module.exports = adminController

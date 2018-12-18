@@ -15,7 +15,7 @@ let userController = {
     }).then(user => {
       const deletable = req.user.id === +req.params.id
       const followed = user.Follower.map(d => d.id).includes(req.user.id)
-      return res.render('profile', {user: req.user, isAuthenticated: req.isAuthenticated, profile: user, deletable: deletable, followed: followed })
+      return res.render('profile', { user: req.user, isAuthenticated: req.isAuthenticated, profile: user, deletable: deletable, followed: followed })
     })
   },
   addFavorite: (req, res) => {
@@ -34,7 +34,7 @@ let userController = {
       .then((favorite) => {
         favorite.destroy()
          .then((restaurant) => {
-           return res.redirect(`/profile`)
+           return res.redirect(`/profile/${req.user.id}`)
          })
       })
   },
@@ -60,4 +60,3 @@ let userController = {
   }
 }
 module.exports = userController
-

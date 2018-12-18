@@ -7,7 +7,6 @@ const app = express()
 const port = 3000
 
 const db = require('./models')
-const User = db.User
 
 const passport = require('./config/passport')
 

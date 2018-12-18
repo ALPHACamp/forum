@@ -2,10 +2,10 @@
 
 <div class="d-flex align-items-center p-3 my-3 text-white-50 bg-purple rounded shadow-sm">
   {{#if category}}
-    <form action="/admin/categories/{{{category.id}}}?_method=PUT" method="POST">
+    <form action="/admin/categories/{{category.id}}?_method=PUT" method="POST">
       <input type="checkbox" name="done" {{#if category.done}}checked{{/if}} hidden>
       <input type="text" placeholder="name" name="name"
-       value="{{{category.name}}}">
+       value="{{category.name}}">
       <button type="submit">Update</button>
       <a href="/admin/categories">or Create New</a>
     </form>
@@ -24,11 +24,11 @@
   {{#each categories}}
   <div class="media text-muted pt-3">
     <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-      <strong class="d-block text-gray-dark">{{{this.name}}}</strong>
+      <strong class="d-block text-gray-dark">{{this.name}}</strong>
     </p>
     <div>
-      <a href="/admin/categories/{{{this.id}}}"><button>edit</button></a>
-      <form action="/admin/categories/{{{this.id}}}?_method=DELETE" method="POST"
+      <a href="/admin/categories/{{this.id}}"><button>edit</button></a>
+      <form action="/admin/categories/{{this.id}}?_method=DELETE" method="POST"
         style="display: inline;"><button type="submit" >delete</button>
       </form>
     </div>

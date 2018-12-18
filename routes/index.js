@@ -11,14 +11,14 @@ var multer = require('multer')
 var upload = multer({ dest: 'upload/' })
 
 module.exports = (app, passport) => {
-  const authenticated = (req, res, next) {
+  const authenticated = (req, res, next) => {
     if (req.isAuthenticated()) {
       return next()
     }
     res.redirect('/signin')
   }
 
-  const authenticatedAdmin = (req, res, next) {
+  const authenticatedAdmin = (req, res, next) => {
     if (req.isAuthenticated()) {
       if (req.user.isAdmin) { return next() }
       return res.redirect('/')
@@ -31,7 +31,7 @@ module.exports = (app, passport) => {
   app.get('/profile/:id', authenticated, userController.getUser)
   app.post('/following/:userId', authenticated, userController.addFollowing)
   app.delete('/following/:userId', authenticated, userController.removeFollowing)
-  
+
   app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
   app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
   app.get('/restaurants', authenticated, restController.getRestaurants)
@@ -57,7 +57,7 @@ module.exports = (app, passport) => {
 
   app.get('/signin', (req, res) => res.render('signin'))
   app.post('/signin',
-    passport.authenticate('local', { failureRedirect: '/signin'}),
+    passport.authenticate('local', { failureRedirect: '/signin' }),
     (req, res) => {
       res.redirect('/')
     }

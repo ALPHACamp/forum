@@ -6,15 +6,15 @@
   <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
   {{#each restaurants}}
   <div class="media text-muted pt-3">
-    <img data-src="holder.js/32x32?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1" alt="32x32" class="mr-2 rounded" style="width: 32px; height: 32px;" src="/upload/{{{this.image}}}" data-holder-rendered="true">
+    <img data-src="holder.js/32x32?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1" alt="32x32" class="mr-2 rounded" style="width: 32px; height: 32px;" src="/upload/{{this.image}}" data-holder-rendered="true">
     <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-      <strong class="d-block text-gray-dark">{{{this.name}}}</strong>
+      <strong class="d-block text-gray-dark">{{this.name}}</strong>
     </p>
-    <p class="card-text">{{{this.Category.dataValues.name}}}</p>
+    <p class="card-text">{{this.Category.dataValues.name}}</p>
     <div>
-      <a href="/admin/restaurants/{{{this.id}}}"><button>show</button></a>
-      <a href="/admin/restaurants/{{{this.id}}}/edit"><button>edit</button></a>
-      <form action="/admin/restaurants/{{{this.id}}}?_method=DELETE" method="POST"
+      <a href="/admin/restaurants/{{this.id}}"><button>show</button></a>
+      <a href="/admin/restaurants/{{this.id}}/edit"><button>edit</button></a>
+      <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST"
         style="display: inline;"><button type="submit" >delete</button>
       </form>
     </div>
