@@ -10,7 +10,10 @@ const db = require('./models')
 
 const passport = require('./config/passport')
 
-app.engine('handlebars', handlebars({defaultLayout: 'main'}))
+app.engine('handlebars', handlebars({
+  defaultLayout: 'main', 
+  helpers: require('./config/handlebars-helpers')
+}))
 app.set('view engine', 'handlebars')
 app.use('/upload', express.static(__dirname + '/upload'))
 app.use(bodyParser.urlencoded({extended: true}))

@@ -26,7 +26,7 @@ module.exports = (app, passport) => {
     res.redirect('/signin')
   }
 
-  app.get('/', (req, res) => res.redirect('/restaurants'))
+  // app.get('/', (req, res) => res.redirect('/restaurants'))
   app.get('/', authenticated, (req, res) => res.redirect('/restaurants'))
   app.get('/profile/:id', authenticated, userController.getUser)
   app.post('/following/:userId', authenticated, userController.addFollowing)
@@ -35,7 +35,10 @@ module.exports = (app, passport) => {
   app.post('/favorite/:restaurantId', authenticated, userController.addFavorite)
   app.delete('/favorite/:restaurantId', authenticated, userController.removeFavorite)
   app.get('/restaurants', authenticated, restController.getRestaurants)
+  app.get('/restaurants/top', authenticated, restController.getTopRestaurants)
   app.get('/restaurants/:id', authenticated, restController.getRestaurant)
+
+  app.get('/users/top', authenticated, userController.getTopUser)
 
   app.post('/comments', authenticated, commentController.postComment)
   app.delete('/comments/:id', authenticatedAdmin, commentController.deleteComment)
@@ -67,6 +70,7 @@ module.exports = (app, passport) => {
   })
   app.post('/signup', (req, res) => {
     User.create({
+      name: req.body.name,
       email: req.body.email,
       password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
     }).then(user => {

@@ -13,15 +13,23 @@
   </li>
 </ul>
 
-<ul class="nav nav-pills">
+{{#each restaurants}}
+<li>{{this.name}} => {{this.Favorites.length}}</li>
+{{/each}}
+
+<!-- <ul class="nav nav-tabs">
   <li class="nav-item">
-    <a class="nav-link" href="?categoryId=">全部</a>
+    <a class="nav-link active" href="/restaurants">Active</a>
   </li>
-  {{#each categories}}
   <li class="nav-item">
-    <a class="nav-link" href="?categoryId={{this.id}}">{{this.name}}</a>
+    <a class="nav-link" href="/restaurants/top">Link</a>
   </li>
-  {{/each}}
+  <li class="nav-item">
+    <a class="nav-link" href="#">Link</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+  </li>
 </ul>
 
 <div class="row">
@@ -31,7 +39,7 @@
     <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="{{this.image}}" data-holder-rendered="true">
     <div class="card-body">
       <p class="card-text">{{this.name}}</p>
-      <p class="card-text">{{this.description}}</p>
+      <p class="card-text">{{this.Category.dataValues.name}}</p>
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
           <a href="/restaurants/{{this.id}}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
@@ -43,24 +51,4 @@
 </div>
 {{/each}}
 </div>
-
-<nav aria-label="Page navigation example">
-  <ul class="pagination">
-    <li class="page-item">
-      <a class="page-link" href="/restaurants?page={{prev}}&categoryId={{categoryId}}" aria-label="Previous">
-        <span aria-hidden="true">&laquo;</span>
-      </a>
-    </li>
-    {{#each totalPage}}
-      {{#ifCond this ../page}}
-      <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
-      {{else}}
-      <li class="page-item"><a class="page-link" href="/restaurants?page={{this}}&categoryId={{../categoryId}}">{{this}}</a></li>
-      {{/ifCond}}
-    {{/each}}
-      <a class="page-link" href="/restaurants?page={{next}}&categoryId={{categoryId}}" aria-label="Next">
-        <span aria-hidden="true">&raquo;</span>
-      </a>
-    </li>
-  </ul>
-</nav>
+ -->

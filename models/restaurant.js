@@ -10,8 +10,9 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Restaurant.associate = function(models) {
     // associations can be defined here
-    Restaurant.belongsTo(models.Category);
     Restaurant.hasMany(models.Comment);
+    Restaurant.hasMany(models.Favorite);
+    Restaurant.belongsTo(models.Category);
     Restaurant.belongsToMany(models.User, {
       through: models.Favorite,
       as: 'UserFavorite'

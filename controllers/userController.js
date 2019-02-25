@@ -18,6 +18,19 @@ let userController = {
       return res.render('profile', { user: req.user, isAuthenticated: req.isAuthenticated, profile: user, deletable: deletable, followed: followed })
     })
   },
+  getTopUser: (req, res) => {
+    return User.findAll({
+      include: [
+        { model: User, as: 'Follower' },
+      ]
+    }).then(users => {
+      users = users.map(user => ({
+        ...user.dataValues, FollowerCount: user.Follower.length
+      }))
+      users = users.sort((a,b) => b.FollowerCount - a.FollowerCount)
+      return res.render('topUser', { user: req.user, isAuthenticated: req.isAuthenticated, users: users })
+    })
+  },
   addFavorite: (req, res) => {
     return Favorite.create({
       UserId: req.user.id,

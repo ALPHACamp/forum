@@ -6,7 +6,8 @@
   <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
   {{#each restaurants}}
   <div class="media text-muted pt-3">
-    <img data-src="holder.js/32x32?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1" alt="32x32" class="mr-2 rounded" style="width: 32px; height: 32px;" src="/upload/{{this.image}}" data-holder-rendered="true">
+    {{this.id}}
+    <img data-src="holder.js/32x32?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1" alt="32x32" class="mr-2 rounded" style="width: 32px; height: 32px;" src="{{this.image}}" data-holder-rendered="true">
     <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
       <strong class="d-block text-gray-dark">{{this.name}}</strong>
     </p>
@@ -21,3 +22,24 @@
   </div>
   {{/each}}
 </div>
+
+<nav aria-label="Page navigation example">
+  <ul class="pagination">
+    <li class="page-item">
+      <a class="page-link" href="/admin/restaurants?page={{prev}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    {{#each totalPage}}
+      {{#ifCond this ../page}}
+      <li class="page-item active"><a class="page-link" href="#">{{this}}</a></li>
+      {{else}}
+      <li class="page-item"><a class="page-link" href="/admin/restaurants?page={{this}}">{{this}}</a></li>
+      {{/ifCond}}
+    {{/each}}
+      <a class="page-link" href="/admin/restaurants?page={{next}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+  </ul>
+</nav>
