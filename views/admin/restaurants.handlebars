@@ -1,27 +1,55 @@
-<a href='/admin/restaurants/create'>create</a>
-<a href='/admin/categories'>categories</a>
+<h1>餐廳後台</h1>
+
+<a href='/admin/restaurants'>Restaurants</a>|
+<a href='/admin/categories'>Categories</a>
+
+<br/>
 <br/>
 
-<div class="my-3 p-3 bg-white rounded shadow-sm">
-  <h6 class="border-bottom border-gray pb-2 mb-0">Recent updates</h6>
-  {{#each restaurants}}
-  <div class="media text-muted pt-3">
-    {{this.id}}
-    <img data-src="holder.js/32x32?theme=thumb&amp;bg=007bff&amp;fg=007bff&amp;size=1" alt="32x32" class="mr-2 rounded" style="width: 32px; height: 32px;" src="{{this.image}}" data-holder-rendered="true">
-    <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-      <strong class="d-block text-gray-dark">{{this.name}}</strong>
-    </p>
-    <p class="card-text">{{this.Category.dataValues.name}}</p>
-    <div>
-      <a href="/admin/restaurants/{{this.id}}"><button>show</button></a>
-      <a href="/admin/restaurants/{{this.id}}/edit"><button>edit</button></a>
-      <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST"
-        style="display: inline;"><button type="submit" >delete</button>
-      </form>
-    </div>
-  </div>
-  {{/each}}
-</div>
+<a href='/admin/restaurants/create'>
+  <button type="button" class="btn btn-primary">New Restaurant</button>
+</a>
+
+<br/>
+<br/>
+
+<table class="table">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Category</th>
+      <th scope="col">Name</th>
+      <th scope="col">#</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each restaurants}}
+    <tr>
+      <th scope="row">{{this.id}}</th>
+      <td>{{this.Category.name}}</td>
+      <td>{{this.name}}</td>
+      <td>
+        <button type="button" class="btn btn-link">
+          <a href="/restaurants/{{this.id}}/dashboard">
+          Show
+          </a>
+        </button>
+        <button type="button" class="btn btn-link">
+          <a href="/admin/restaurants/{{this.id}}/edit">
+            Edit
+          </a>
+        </button>
+        <form action="/admin/restaurants/{{this.id}}?_method=DELETE" method="POST" style="display: inline;">
+          <button type="submit" class="btn btn-link">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<br/>
+<br/>
 
 <nav aria-label="Page navigation example">
   <ul class="pagination">

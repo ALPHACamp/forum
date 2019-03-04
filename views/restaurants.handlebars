@@ -3,7 +3,7 @@
     <a class="nav-link active" href="#">首頁</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">最新動態</a>
+    <a class="nav-link" href="/restaurants/feeds">最新動態</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="/restaurants/top">TOP10 人氣餐廳</a>
@@ -13,28 +13,40 @@
   </li>
 </ul>
 
+<br/>
+
 <ul class="nav nav-pills">
   <li class="nav-item">
-    <a class="nav-link" href="?categoryId=">全部</a>
+    <a class="nav-link {{#ifCond '' categoryId}}active{{/ifCond}}" href="?categoryId=">全部</a>
   </li>
   {{#each categories}}
   <li class="nav-item">
-    <a class="nav-link" href="?categoryId={{this.id}}">{{this.name}}</a>
+    <a class="nav-link {{#ifCond this.id ../categoryId}}active{{/ifCond}}" href="?categoryId={{this.id}}">{{this.name}}</a>
   </li>
   {{/each}}
 </ul>
+
+<br/>
 
 <div class="row">
 {{#each restaurants}}
 <div class="col-md-4">
   <div class="card mb-4 shadow-sm">
-    <img class="card-img-top" data-src="holder.js/100px225?theme=thumb&amp;bg=55595c&amp;fg=eceeef&amp;text=Thumbnail" alt="Thumbnail [100%x225]" style="height: 225px; width: 100%; display: block;" src="{{this.image}}" data-holder-rendered="true">
     <div class="card-body">
-      <p class="card-text">{{this.name}}</p>
+      <p class="card-text">
+        <a href="/restaurants/{{this.id}}">
+          {{this.name}}
+        </a>
+      </p>
+      <span class="badge badge-secondary">{{this.Category.name}}</span>
       <p class="card-text">{{this.description}}</p>
       <div class="d-flex justify-content-between align-items-center">
         <div class="btn-group">
-          <a href="/restaurants/{{this.id}}"><button type="button" class="btn btn-sm btn-outline-secondary">View</button></a>
+          {{#if this.isFavorited }}
+            <form action="/favorite/{{this.id}}?_method=DELETE" method="POST"><button type="submit" class="btn btn-danger">移除最愛</button></form>
+          {{else}}
+            <form action="/favorite/{{this.id}}" method="POST"><button type="submit" class="btn btn-primary">加到最愛</button></form>
+          {{/if}}
         </div>
         <small class="text-muted"></small>
       </div>
@@ -43,6 +55,9 @@
 </div>
 {{/each}}
 </div>
+
+<br/>
+<br/>
 
 <nav aria-label="Page navigation example">
   <ul class="pagination">

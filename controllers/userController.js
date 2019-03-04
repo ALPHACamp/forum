@@ -1,8 +1,11 @@
+const fs = require('fs')
+const imgur = require('imgur-node-api')
 const db = require('../models')
 const User = db.User
 const Restaurant = db.Restaurant
 const Favorite = db.Favorite
 const Followship = db.Followship
+const Comment = db.Comment
 
 let userController = {
   getUser: (req, res) => {
@@ -10,13 +13,51 @@ let userController = {
       include: [
         { model: Restaurant, as: 'UserFavorite' },
         { model: User, as: 'Follower' },
-        { model: User, as: 'Following' }
+        { model: User, as: 'Following' },
+        { model: Comment, include: 'Restaurant' },
       ]
     }).then(user => {
-      const deletable = req.user.id === +req.params.id
-      const followed = user.Follower.map(d => d.id).includes(req.user.id)
-      return res.render('profile', { user: req.user, isAuthenticated: req.isAuthenticated, profile: user, deletable: deletable, followed: followed })
+      const isFollowed = req.user.Following.map(d => d.id).includes(user.id)
+      return res.render('profile', { profile: user, isFollowed: isFollowed, user: req.user })
     })
+  },
+  editUser: (req, res) => {
+    return User.findByPk(req.params.id).then(user => {
+      return res.render('user/edit', {user: user})
+    })
+  },
+  putUser: (req, res) => {
+    const { file } = req
+    if (file) {
+      fs.readFile(file.path, (err, data) => {
+        if (err) console.log('Error: ', err)
+        fs.writeFile(`upload/${file.originalname}`, data, () => {
+          imgur.setClientID('');
+          imgur.upload(`upload/${file.originalname}`, (err, img) => {
+            return User.findByPk(req.params.id)
+              .then((user) => {
+                user.update({
+                  name: req.body.name,
+                  image: img.data.link,
+                })
+                .then((user) => {
+                  res.redirect(`/users/${req.params.id}`)
+                })
+              })
+          })
+        })
+      })
+    }
+    else
+      return User.findByPk(req.params.id)
+          .then((user) => {
+            user.update({
+              name: req.body.name,
+            })
+            .then((user) => {
+              res.redirect(`/users/${req.params.id}`)
+            })
+          })
   },
   getTopUser: (req, res) => {
     return User.findAll({
@@ -25,10 +66,12 @@ let userController = {
       ]
     }).then(users => {
       users = users.map(user => ({
-        ...user.dataValues, FollowerCount: user.Follower.length
+        ...user.dataValues, FollowerCount: user.Follower.length,
+        isFollowed: req.user.Following.map(d => d.id).includes(user.id),
       }))
+
       users = users.sort((a,b) => b.FollowerCount - a.FollowerCount)
-      return res.render('topUser', { user: req.user, isAuthenticated: req.isAuthenticated, users: users })
+      return res.render('topUser', { user: req.user, users: users })
     })
   },
   addFavorite: (req, res) => {
@@ -39,7 +82,7 @@ let userController = {
       updatedAt: new Date()
     })
      .then((restaurant) => {
-       return res.redirect(`/restaurants/${req.params.restaurantId}`)
+       return res.redirect('back')
      })
   },
   removeFavorite: (req, res) => {
@@ -47,7 +90,7 @@ let userController = {
       .then((favorite) => {
         favorite.destroy()
          .then((restaurant) => {
-           return res.redirect(`/profile/${req.user.id}`)
+           return res.redirect('back')
          })
       })
   },
@@ -59,7 +102,7 @@ let userController = {
       updatedAt: new Date()
     })
      .then((followship) => {
-       return res.redirect(`/profile/${req.params.userId}`)
+       return res.redirect('back')
      })
   },
   removeFollowing: (req, res) => {
@@ -67,7 +110,7 @@ let userController = {
       .then((followship) => {
         followship.destroy()
          .then((followship) => {
-           return res.redirect(`/profile/${req.params.userId}`)
+           return res.redirect('back')
          })
       })
   }

@@ -1,30 +1,46 @@
+<div class="row">
+  <div class="col-md-12">
+    <h1>{{restaurant.name}}</h1>
+    <p>[{{restaurant.Category.name}}]</p>
+  </div>
 
-<h6>Recent updates</h6>
-<div>
-  <p>
-    {{restaurant.name}}
-  </p>
-  <p>
-   {{restaurant.Category.dataValues.name}}
-  </p>
+  <div class="col-md-4">
+    <img class="img-responsive center-block" src="">
+    <br>
+    <div class="well">
+      <ul class="list-unstyled">
+        <li><strong>Opening Hour:</strong> {{restaurant.opening_hours}}</li>
+        <li><strong>Tel:</strong> {{restaurant.tel}}</li>
+        <li><strong>Address:</strong> {{restaurant.address}}</li>
+      </ul>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <p>{{restaurant.description}}</p>
+    <hr>
+      <a class="btn btn-primary" href="/restaurants/{{restaurant.id}}/dashboard">Dashboard</a>
+      {{#if isFavorited }}
+        <form action="/favorite/{{restaurant.id}}?_method=DELETE" method="POST" style="display: contents;"><button type="submit" class="btn btn-danger">移除最愛</button></form>
+      {{else}}
+        <form action="/favorite/{{restaurant.id}}" method="POST" style="display: contents;"><button type="submit" class="btn btn-primary">加到最愛</button></form>
+      {{/if}}
+  </div>
+  <hr>
 </div>
 
-<form action="/favorite/{{restaurant.id}}" method="POST"><button type="submit" class="btn btn-link">加到最愛</button></form>
+<br/><br/>
+<h3>所有評論：</h3>
+{{#each restaurant.Comments}}
+<form action="/comments/{{this.dataValues.id}}?_method=DELETE" method="POST" style="float: right;">{{#if ../user.isAdmin}}<button type="submit" class="btn btn-danger">Delete</button>{{/if}}</form>
+<blockquote class="blockquote mb-0">
+  <h4><a href="/users/{{this.User.id}}">{{this.User.name}}</a></h4>
+  <p>{{this.text}}</p>
+  <footer class="blockquote-footer">{{moment this.createdAt}}</footer>
+</blockquote>
+<hr/>
+{{/each}}
 
-所有評論：
-<ul>
-  {{#each restaurant.Comments}}
-  <li>
-    
-    <a href="/profile/{{this.User.id}}">{{this.User.email}}</a>: {{this.text}}
-    <form action="/comments/{{this.dataValues.id}}?_method=DELETE" method="POST" style="display: inline;">{{#if ../user.isAdmin}}<button type="submit" class="btn btn-link">Delete</button>{{/if}}</form>
-  </li>
-  {{/each}}
-</ul>
-
-{{#unless restaurant.Comments}}
-<p>目前沒有評論</p>
-{{/unless}}
+<br/><br/>
 
 <form action="/comments" method="POST">
   <div class="form-group">
@@ -35,6 +51,29 @@
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
+
+<!-- 
+<h6>Recent updates</h6>
+<div>
+  <p>
+    
+  </p>
+  <p>
+   {{restaurant.Category.dataValues.name}}
+  </p>
+</div>
+
+<a href="/restaurants/{{restaurant.id}}/dashboard">dashboard</a>
+
+<form action="/favorite/{{restaurant.id}}" method="POST"><button type="submit" class="btn btn-link">加到最愛</button></form>
+
+
+
+{{#unless restaurant.Comments}}
+<p>目前沒有評論</p>
+{{/unless}}
+
+
 <br/>
 <a href="/">回列表</a>
-
+ -->

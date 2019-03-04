@@ -1,48 +1,89 @@
-
-
-<h6>Profile</h6>
-<div>
-  <p>
-    信箱： {{profile.email}}
-  </p>
+<div class="card mb-3">
+  <div class="row no-gutters">
+    <div class="col-md-4">
+      <img src="{{profile.image}}" width="300px" height="300px"/>
+    </div>
+    <div class="col-md-8">
+      <div class="card-body">
+        <h5 class="card-title">{{profile.name}}</h5>
+        <p class="card-text">
+          {{profile.email}}
+          <ul class="list-unstyled list-inline">
+            <li><strong>{{profile.Comments.length}}</strong> 已評論餐廳</li>
+            <li><strong>{{profile.UserFavorite.length}}</strong> 收藏的餐廳</li>
+            <li><strong>{{profile.Following.length}}</strong> followings (追蹤者)</li>
+            <li><strong>{{profile.Follower.length}}</strong> followers (追隨者)</li>
+          </ul>
+        </p>
+        <p>
+          {{#ifCond profile.id user.id }}
+            <a href="/users/{{profile.id}}/edit"><button type="submit" class="btn btn-primary">edit</button></a>
+          {{else}}
+            {{#if this.isFollowed }}
+              <form action="/following/{{profile.id}}?_method=DELETE" method="POST" style="display: contents;"><button type="submit" class="btn btn-danger">取消追蹤</button></form>
+            {{else}}
+              <form action="/following/{{profile.id}}" method="POST" style="display: contents;"><button type="submit" class="btn btn-primary">追蹤</button></form>
+            {{/if}}
+          {{/ifCond}}
+        </p>
+      </div>
+    </div>
+  </div>
 </div>
 
-
-
-{{#unless deletable }}
-{{#if followed }}
-<form action="/following/{{profile.id}}?_method=DELETE" method="POST"><button type="submit" class="btn btn-link">取消追蹤</button></form>
-{{else}}
-<form action="/following/{{profile.id}}" method="POST"><button type="submit" class="btn btn-link">追蹤</button></form>
-{{/if}}
-{{/unless}}
-
-最愛：
-<ul>
-  {{#each profile.UserFavorite}}
-  <li>
-    <a href="/restaurants/{{this.restaurantId}}">{{this.name}}</a>
-    {{#if ../deletable }}
-    <form action="/favorite/{{this.id}}?_method=DELETE" method="POST" style="display: inline;"><button type="submit" class="btn btn-link">移除</button></form>
-    {{/if}}
-  </li>
-  {{/each}}
-</ul>
-
-追随者：
-<ul>
-  {{#each profile.Follower}}
-  <li>
-    <a href="/profile/{{this.id}}">{{this.email}}</a>
-  </li>
-  {{/each}}
-</ul>
-
-追蹤的使用者：
-<ul>
-  {{#each profile.Following}}
-  <li>
-    <a href="/profile/{{this.id}}">{{this.email}}</a>
-  </li>
-  {{/each}}
-</ul>
+<div class="row">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-header">
+        <strong>{{profile.Following.length}}</strong> followings (追蹤者)
+      </div>
+      <div class="card-body">
+        {{#each profile.Following}}
+          <a href="/users/{{this.id}}">
+            <img src="{{this.image}}" width="60" height="60" />
+          </a>
+        {{/each}}
+      </div>
+    </div>
+    <br/>
+    <div class="card">
+      <div class="card-header">
+        <strong>{{profile.Follower.length}}</strong> followers (追隨者)
+      </div>
+      <div class="card-body">
+        {{#each profile.Follower}}
+          <a href="/users/{{this.id}}">
+            <img src="{{this.image}}" width="60" height="60" />
+          </a>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+  <div class="col-md-8">
+    <div class="card">
+      <div class="card-header">
+        <strong>{{profile.Comments.length}}</strong> 已評論餐廳
+      </div>
+      <div class="card-body">
+        {{#each profile.Comments}}
+          <a href="/restaurants/{{this.Restaurant.id}}">
+            <img src={{this.Restaurant.image}} width="60" height="60"/>
+          </a>
+        {{/each}}
+      </div>
+    </div>
+    <br/>
+    <div class="card">
+      <div class="card-header">
+        <strong>{{profile.UserFavorite.length}}</strong> 收藏的餐廳
+      </div>
+      <div class="card-body">
+        {{#each profile.UserFavorite}}
+          <a href="/restaurants/{{this.id}}">
+            <img src="{{this.image}}" width="60" height="60" />
+          </a>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</div>

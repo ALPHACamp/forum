@@ -7,10 +7,10 @@ let categoryController = {
       if (req.params.id) {
         Category.findByPk(req.params.id)
         .then((category) => {
-          return res.render('admin/categories', {categories: categories, category: category, user: req.user, isAuthenticated: req.isAuthenticated})
+          return res.render('admin/categories', {categories: categories, category: category, user: req.user})
         })
       } else {
-        return res.render('admin/categories', {categories: categories, user: req.user, isAuthenticated: req.isAuthenticated})
+        return res.render('admin/categories', {categories: categories, user: req.user})
       }
     })
   },

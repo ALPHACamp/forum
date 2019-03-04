@@ -17,9 +17,64 @@ module.exports = {
       password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
       isAdmin: true,
       name: "root",
+      image: faker.image.imageUrl(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      email: 'user1@example.com',
+      password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
+      isAdmin: false,
+      name: "user1",
+      image: faker.image.imageUrl(),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      email: 'user2@example.com',
+      password: bcrypt.hashSync('12345678', bcrypt.genSaltSync(10), null),
+      isAdmin: false,
+      name: "user2",
+      image: faker.image.imageUrl(),
       createdAt: new Date(),
       updatedAt: new Date(),
     }], {});
+
+    queryInterface.bulkInsert('Followships', [{
+      followerId: 1,
+      followingId: 2,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      followerId: 1,
+      followingId: 3,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }, {
+      followerId: 2,
+      followingId: 3,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    }], {});
+
+
+
+    queryInterface.bulkInsert('Comments', 
+      [...Array(10)].map((_,i) => i).map(d =>
+      ({
+        text: faker.lorem.sentence(),
+        userId: Math.floor(Math.random() * 3)+1,
+        restaurantId: Math.floor(Math.random() * 10)+1,
+        createdAt: new Date(), updatedAt: new Date(),
+      })
+    ), {});
+
+    queryInterface.bulkInsert('Favorites', 
+      [...Array(10)].map((_,i) => i).map(d =>
+      ({
+        userId: Math.floor(Math.random() * 3)+1,
+        restaurantId: Math.floor(Math.random() * 10)+1,
+        createdAt: new Date(), updatedAt: new Date(),
+      })
+    ), {});
 
     return queryInterface.bulkInsert('Restaurants', 
       [...Array(50)].map((_,i) => i).map(d =>
