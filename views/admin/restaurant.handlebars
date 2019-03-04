@@ -1,13 +1,28 @@
-<div>
-  <h6>Recent updates</h6>
-    <div>
-      <p>
-        {{restaurant.name}} 
-      </p>
-      <p>
-        {{restaurant.Category.dataValues.name}}
-      </p>
+<div class="row">
+  <div class="col-md-12">
+    <h1>{{restaurant.name}}</h1>
+    <p>[{{restaurant.Category.name}}]</p>
+  </div>
+
+  <div class="col-md-4">
+    <img class="img-responsive center-block" src="{{restaurant.image}}" style="width: 250px;margin-bottom: 25px;">
+    <br>
+    <div class="well">
+      <ul class="list-unstyled">
+        <li><strong>Opening Hour:</strong> {{restaurant.opening_hours}}</li>
+        <li><strong>Tel:</strong> {{restaurant.tel}}</li>
+        <li><strong>Address:</strong> {{restaurant.address}}</li>
+      </ul>
     </div>
+  </div>
+  <div class="col-md-8">
+    <p>{{restaurant.description}}</p>
+  </div>
+  <hr>
 </div>
+
+<hr>
+
 <br/>
-<a href="/admin">回列表</a>
+<br/>
+<a href="javascript:history.back()">回上一頁</a>

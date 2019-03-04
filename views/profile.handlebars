@@ -40,7 +40,7 @@
       <div class="card-body">
         {{#each profile.Following}}
           <a href="/users/{{this.id}}">
-            <img src="{{this.image}}" width="60" height="60" />
+            <img src="{{this.image}}" width="60" height="60"  class="avatar"/>
           </a>
         {{/each}}
       </div>
@@ -53,7 +53,7 @@
       <div class="card-body">
         {{#each profile.Follower}}
           <a href="/users/{{this.id}}">
-            <img src="{{this.image}}" width="60" height="60" />
+            <img src="{{this.image}}" width="60" height="60" class="avatar"/>
           </a>
         {{/each}}
       </div>
@@ -67,7 +67,7 @@
       <div class="card-body">
         {{#each profile.Comments}}
           <a href="/restaurants/{{this.Restaurant.id}}">
-            <img src={{this.Restaurant.image}} width="60" height="60"/>
+            <img src={{this.Restaurant.image}} width="60" height="60" class="avatar"/>
           </a>
         {{/each}}
       </div>
@@ -80,7 +80,7 @@
       <div class="card-body">
         {{#each profile.UserFavorite}}
           <a href="/restaurants/{{this.id}}">
-            <img src="{{this.image}}" width="60" height="60" />
+            <img src="{{this.image}}" width="60" height="60" class="avatar"/>
           </a>
         {{/each}}
       </div>

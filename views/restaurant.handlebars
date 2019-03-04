@@ -5,7 +5,7 @@
   </div>
 
   <div class="col-md-4">
-    <img class="img-responsive center-block" src="">
+    <img class="img-responsive center-block" src="{{restaurant.image}}" style="width: 250px;margin-bottom: 25px;">
     <br>
     <div class="well">
       <ul class="list-unstyled">
@@ -17,16 +17,17 @@
   </div>
   <div class="col-md-8">
     <p>{{restaurant.description}}</p>
-    <hr>
-      <a class="btn btn-primary" href="/restaurants/{{restaurant.id}}/dashboard">Dashboard</a>
-      {{#if isFavorited }}
-        <form action="/favorite/{{restaurant.id}}?_method=DELETE" method="POST" style="display: contents;"><button type="submit" class="btn btn-danger">移除最愛</button></form>
-      {{else}}
-        <form action="/favorite/{{restaurant.id}}" method="POST" style="display: contents;"><button type="submit" class="btn btn-primary">加到最愛</button></form>
-      {{/if}}
+    <a class="btn btn-primary" href="/restaurants/{{restaurant.id}}/dashboard">Dashboard</a>
+    {{#if isFavorited }}
+      <form action="/favorite/{{restaurant.id}}?_method=DELETE" method="POST" style="display: contents;"><button type="submit" class="btn btn-danger">移除最愛</button></form>
+    {{else}}
+      <form action="/favorite/{{restaurant.id}}" method="POST" style="display: contents;"><button type="submit" class="btn btn-primary">加到最愛</button></form>
+    {{/if}}
   </div>
   <hr>
 </div>
+
+<hr>
 
 <br/><br/>
 <h3>所有評論：</h3>
@@ -51,29 +52,6 @@
   <button type="submit" class="btn btn-primary">Submit</button>
 </form>
 
-
-<!-- 
-<h6>Recent updates</h6>
-<div>
-  <p>
-    
-  </p>
-  <p>
-   {{restaurant.Category.dataValues.name}}
-  </p>
-</div>
-
-<a href="/restaurants/{{restaurant.id}}/dashboard">dashboard</a>
-
-<form action="/favorite/{{restaurant.id}}" method="POST"><button type="submit" class="btn btn-link">加到最愛</button></form>
-
-
-
-{{#unless restaurant.Comments}}
-<p>目前沒有評論</p>
-{{/unless}}
-
-
 <br/>
-<a href="/">回列表</a>
- -->
+<br/>
+<a href="javascript:history.back()">回上一頁</a>
