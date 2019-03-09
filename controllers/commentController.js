@@ -6,8 +6,6 @@ let commentController = {
   postComment: (req, res) => {
     return Comment.create({
       text: req.body.text,
-      createdAt: new Date(),
-      updatedAt: new Date(),
       RestaurantId: req.body.restaurantId,
       UserId: req.user.id
     })
