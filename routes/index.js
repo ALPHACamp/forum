@@ -1,11 +1,8 @@
-const bcrypt = require('bcrypt-nodejs')
 const adminController = require('../controllers/adminController.js')
 const restController = require('../controllers/restController.js')
 const categoryController = require('../controllers/categoryController.js')
 const commentController = require('../controllers/commentController.js')
 const userController = require('../controllers/userController.js')
-const db = require('../models')
-const User = db.User
 
 var multer = require('multer')
 var upload = multer({ dest: 'upload/' })
@@ -62,43 +59,9 @@ module.exports = (app, passport) => {
   app.put('/admin/categories/:id', authenticatedAdmin, categoryController.putCategory)
   app.delete('/admin/categories/:id', authenticatedAdmin, categoryController.deleteCategory)
 
-  app.get('/signin', (req, res) => res.render('signin'))
-  app.post('/signin',
-    passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }),
-    (req, res) => {
-      req.flash('success_messages', '成功登入！')
-      res.redirect('/restaurants')
-    }
-  )
-  app.get('/signup', (req, res) => {
-    return res.render('signup')
-  })
-  app.post('/signup', (req, res) => {
-    
-    if(req.body.passwordCheck !== req.body.password){
-      req.flash('error_messages', '兩次密碼輸入不同！')
-      return res.redirect('/signup')
-    } else {
-      User.findOne({where: {email: req.body.email}}).then(user => {
-        if(user){
-          req.flash('error_messages', '信箱重複！')
-          return res.redirect('/signup')
-        } else {
-          User.create({
-            name: req.body.name,
-            email: req.body.email,
-            password: bcrypt.hashSync(req.body.password, bcrypt.genSaltSync(10), null)
-          }).then(user => {
-            req.flash('success_messages', '成功註冊帳號！')
-            return res.redirect('/signin')
-          })  
-        }
-      })    
-    }
-  })
-  app.get('/logout', (req, res) => {
-    req.flash('success_messages', '登出成功！')
-    req.logout()
-    res.redirect('/signin')
-  })
+  app.get('/signin', userController.signInPage)
+  app.post('/signin', passport.authenticate('local', { failureRedirect: '/signin', failureFlash: true }), userController.signIn)
+  app.get('/signup', userController.signUpPage)
+  app.post('/signup', userController.signUp)
+  app.get('/logout', userController.logout)
 }

@@ -19,7 +19,6 @@ let adminController = {
       let next = page+1 > pages ? pages : page+1
       return res.render('admin/restaurants', {
         restaurants: result.rows, 
-        user: req.user, 
         page: page, totalPage: totalPage, prev: prev, next: next
       })
     })
@@ -27,16 +26,14 @@ let adminController = {
   getRestaurant: (req, res) => {
     return Restaurant.findByPk(req.params.id, {include: [Category]}).then(restaurant => {
       return res.render('admin/restaurant', {
-        restaurant: restaurant,
-        user: req.user
+        restaurant: restaurant
       })
     })
   },
   createRestaurant: (req, res) => {
     Category.findAll().then(categories => {
       return res.render('admin/create', {
-        categories: categories,
-        user: req.user
+        categories: categories
       })
     })
   },
@@ -45,8 +42,7 @@ let adminController = {
       Category.findAll().then(categories => {
         return res.render('admin/create', {
           categories: categories,
-          restaurant: restaurant, 
-          user: req.user
+          restaurant: restaurant
         })
       })
     })
@@ -72,8 +68,6 @@ let adminController = {
               opening_hours: req.body.opening_hours,
               description: req.body.description,
               image: file ? img.data.link : null,
-              createdAt: new Date(),
-              updatedAt: new Date(),
               CategoryId: req.body.categoryId
             }).then((restaurant) => {
               req.flash('success_messages', 'restaurant was successfully created')
@@ -91,8 +85,6 @@ let adminController = {
         opening_hours: req.body.opening_hours,
         description: req.body.description,
         image: null,
-        createdAt: new Date(),
-        updatedAt: new Date(),
         CategoryId: req.body.categoryId
       }).then((restaurant) => {
         req.flash('success_messages', 'restaurant was successfully created')
@@ -122,7 +114,6 @@ let adminController = {
                   opening_hours: req.body.opening_hours,
                   description: req.body.description,
                   image: file ? img.data.link : restaurant.image,
-                  createdAt: new Date(),
                   CategoryId: req.body.categoryId
                 })
                 .then((restaurant) => {
@@ -144,7 +135,6 @@ let adminController = {
             opening_hours: req.body.opening_hours,
             description: req.body.description,
             image: restaurant.image,
-            createdAt: new Date(),
             CategoryId: req.body.categoryId
           })
           .then((restaurant) => {

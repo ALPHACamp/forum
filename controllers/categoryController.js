@@ -7,10 +7,10 @@ let categoryController = {
       if (req.params.id) {
         Category.findByPk(req.params.id)
         .then((category) => {
-          return res.render('admin/categories', {categories: categories, category: category, user: req.user})
+          return res.render('admin/categories', {categories: categories, category: category})
         })
       } else {
-        return res.render('admin/categories', {categories: categories, user: req.user})
+        return res.render('admin/categories', {categories: categories})
       }
     })
   },
@@ -20,9 +20,7 @@ let categoryController = {
       return res.redirect('back')
     } else {
       return Category.create({
-        name: req.body.name,
-        createdAt: new Date(),
-        updatedAt: new Date()
+        name: req.body.name
       })
       .then((category) => {
         res.redirect('/admin/categories')

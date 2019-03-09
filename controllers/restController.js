@@ -27,7 +27,8 @@ let restController = {
       let next = page+1 > pages ? pages : page+1
 
       restaurants = result.rows.map(d => (
-        {...d.dataValues, 
+        {
+          ...d.dataValues, 
           description: d.description.substring(0, 50),
           isFavorited: req.user.UserFavorite.map(d => d.id).includes(d.id)
         }
@@ -37,7 +38,6 @@ let restController = {
         return res.render('restaurants', {
           restaurants: restaurants, 
           categories: categories,
-          user: req.user, 
           isAuthenticated: req.isAuthenticated, 
           page: page, totalPage: totalPage, prev: prev, next: next,
           categoryId: categoryId
@@ -52,9 +52,9 @@ let restController = {
       // group: ['Restaurant.id', 'Favorites.id'],
       // order: Sequelize.literal('FavoriteCount DESC')
     }).then(restaurants => {
-      // console.log(restaurants[0].name)
       restaurants = restaurants.map(d => (
-        {...d.dataValues, 
+        {
+          ...d.dataValues, 
           description: d.description.substring(0, 50),
           isFavorited: req.user.UserFavorite.map(d => d.id).includes(d.id),
           FavoriteCount: d.Favorites.length,
@@ -64,26 +64,41 @@ let restController = {
 
       return res.render('topRestaurants', {
         restaurants: restaurants,
-        user: req.user, 
         isAuthenticated: req.isAuthenticated, 
       })
     })
   },
   getRestaurant: (req, res) => {
-    return Restaurant.findByPk(req.params.id, {include: [Category, { model: User, as: 'UserFavorite' }, {model: Comment, include: [User]}]}).then(restaurant => {
-      const isFavorited = restaurant.UserFavorite.map(d => d.id).includes(req.user.id)
-      return res.render('restaurant', {restaurant: restaurant, isFavorited: isFavorited, user: req.user})
-    })
+    return Restaurant.findByPk(req.params.id, {
+        include: [
+          Category, 
+          { model: User, as: 'UserFavorite' }, 
+          { model: Comment, include: [User]}
+        ]
+      }).then(restaurant => {
+        const isFavorited = restaurant.UserFavorite.map(d => d.id).includes(req.user.id)
+        return res.render('restaurant', {restaurant: restaurant, isFavorited: isFavorited})
+      })
   },
   getDashboard: (req, res) => {
-    return Restaurant.findByPk(req.params.id, {include: [Category, { model: User, as: 'UserFavorite' }, {model: Comment, include: [User]}]}).then(restaurant => {
-      return res.render('dashboard', {restaurant: restaurant, user: req.user})
-    })
+    return Restaurant.findByPk(req.params.id, {
+        include: [
+          Category,
+          { model: User, as: 'UserFavorite' },
+          {model: Comment, include: [User]}
+        ]
+      }).then(restaurant => {
+        return res.render('dashboard', {restaurant: restaurant})
+      })
   },
   getFeeds: (req, res) => {
     return Restaurant.findAll({limit: 10, order: [['createdAt', 'DESC'],], include: [Category]}).then(restaurants => {
-      Comment.findAll({limit: 10, order: [['createdAt', 'DESC'],], include: [User, Restaurant]}).then(comments => {
-        return res.render('feeds', {restaurants: restaurants, comments: comments, user: req.user})
+      Comment.findAll({
+        limit: 10, 
+        order: [['createdAt', 'DESC']], 
+        include: [User, Restaurant]
+      }).then(comments => {
+        return res.render('feeds', {restaurants: restaurants, comments: comments})
       })
     })
   }
