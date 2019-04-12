@@ -4,8 +4,8 @@ const categoryController = require('../controllers/categoryController.js')
 const commentController = require('../controllers/commentController.js')
 const userController = require('../controllers/userController.js')
 
-var multer = require('multer')
-var upload = multer({ dest: 'upload/' })
+const multer = require('multer')
+const upload = multer({ dest: 'temp/' })
 
 module.exports = (app, passport) => {
   const authenticated = (req, res, next) => {
