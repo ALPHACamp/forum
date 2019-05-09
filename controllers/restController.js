@@ -30,7 +30,7 @@ let restController = {
         {
           ...d.dataValues, 
           description: d.description.substring(0, 50),
-          isFavorited: req.user.UserFavorite.map(d => d.id).includes(d.id)
+          isFavorited: req.user ? req.user.UserFavorite.map(d => d.id).includes(d.id) : false
         }
       ))
 
@@ -40,7 +40,7 @@ let restController = {
           categories: categories,
           isAuthenticated: req.isAuthenticated, 
           page: page, totalPage: totalPage, prev: prev, next: next,
-          categoryId: categoryId
+          categoryId: categoryId,
         })
       })
     })
@@ -101,6 +101,98 @@ let restController = {
         return res.render('feeds', {restaurants: restaurants, comments: comments})
       })
     })
-  }
+  },
+  getRestaurantsApi: (req, res) => {
+    let offset = 0
+    let categoryId = ''
+    let whereQuery = {}
+    if(req.query.page)
+     offset = (req.query.page-1) * pageLimit
+    if(req.query.categoryId){
+      categoryId = +req.query.categoryId
+      whereQuery['categoryId'] = categoryId
+    }
+
+    return Restaurant.findAndCountAll({include: [Category], where: whereQuery, offset: offset, limit: pageLimit}).then(result => {
+      let page = +req.query.page || 1
+      let pages = Math.ceil(result.count/pageLimit)
+      let totalPage = [...Array(pages)].map((_,i) => i+1)
+      let prev = page-1 < 1 ? 1 : page-1
+      let next = page+1 > pages ? pages : page+1
+
+      restaurants = result.rows.map(d => (
+        {
+          ...d.dataValues, 
+          description: d.description.substring(0, 50),
+          isFavorited: req.user ? req.user.UserFavorite.map(d => d.id).includes(d.id) : false
+        }
+      ))
+
+      Category.findAll().then(categories => {
+        return res.json({
+          restaurants: restaurants, 
+          categories: categories,
+          isAuthenticated: req.isAuthenticated, 
+          page: page, totalPage: totalPage, prev: prev, next: next,
+          categoryId: categoryId,
+          user: req.user
+        })
+      })
+    })
+  },
+  getTopRestaurantsApi: (req, res) => {
+    return Restaurant.findAll({
+      include: [Favorite],
+    }).then(restaurants => {
+      restaurants = restaurants.map(d => (
+        {
+          ...d.dataValues, 
+          description: d.description.substring(0, 50),
+          isFavorited: req.user.UserFavorite.map(d => d.id).includes(d.id),
+          FavoriteCount: d.Favorites.length,
+        }
+      ))
+      restaurants = restaurants.sort((a, b) => a.FavoriteCount < b.FavoriteCount ? 1 : -1).slice(0, 10)
+
+      return res.json({
+        restaurants: restaurants,
+        isAuthenticated: req.isAuthenticated, 
+      })
+    })
+  },
+  getRestaurantApi: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+        include: [
+          Category, 
+          { model: User, as: 'UserFavorite' }, 
+          { model: Comment, include: [User]}
+        ]
+      }).then(restaurant => {
+        const isFavorited = restaurant.UserFavorite.map(d => d.id).includes(req.user.id)
+        return res.json({restaurant: restaurant, isFavorited: isFavorited})
+      })
+  },
+  getDashboardApi: (req, res) => {
+    return Restaurant.findByPk(req.params.id, {
+        include: [
+          Category,
+          { model: User, as: 'UserFavorite' },
+          {model: Comment, include: [User]}
+        ]
+      }).then(restaurant => {
+        return res.json({restaurant: restaurant})
+      })
+  },
+  getFeedsApi: (req, res) => {
+    return Restaurant.findAll({limit: 10, order: [['createdAt', 'DESC'],], include: [Category]}).then(restaurants => {
+      Comment.findAll({
+        limit: 10, 
+        order: [['createdAt', 'DESC']], 
+        include: [User, Restaurant]
+      }).then(comments => {
+        return res.json({restaurants: restaurants, comments: comments})
+      })
+    })
+  },
 }
 module.exports = restController
